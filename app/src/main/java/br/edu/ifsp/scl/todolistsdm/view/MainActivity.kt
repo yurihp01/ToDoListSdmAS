@@ -11,8 +11,8 @@ import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.ifsp.scl.todolistsdm.R
 import br.edu.ifsp.scl.todolistsdm.adapter.ListaTarefasAdapter
-import br.edu.ifsp.scl.todolistsdm.controller.TodoListPresenter
 import br.edu.ifsp.scl.todolistsdm.model.entity.Tarefa
+import br.edu.ifsp.scl.todolistsdm.viewmodel.ToDoListViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.celula_lista_tarefas.view.*
 import kotlinx.android.synthetic.main.conteudo_principal.*
@@ -30,7 +30,8 @@ class MainActivity : AppCompatActivity(), ToDoListViewInterface {
     }
 
     private lateinit var listaTarefasAdapter: ListaTarefasAdapter
-    private lateinit var presenter: TodoListPresenter
+//    private lateinit var presenter: TodoListPresenter
+    private lateinit var viewModel: ToDoListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity(), ToDoListViewInterface {
             Atualizar atributo checado na fonte de dados
              */
             tarefaClicada?.let {
-                presenter.alterarTarefa(it)
+                viewModel.atualizarTarefa(it)
             }
         }
 
@@ -72,14 +73,16 @@ class MainActivity : AppCompatActivity(), ToDoListViewInterface {
         }
 
         /*
-        Instanciar controller
+        Instanciar presenter/ viewModel
          */
-        presenter = TodoListPresenter(this)
+//        presenter = TodoListPresenter(this)
+
+        viewModel = ToDoListViewModel(this)
 
         /*
         Recuperar tarefas da fonte de dados e passar para o adaptador do ListView
          */
-        presenter.buscarTarefas()
+        viewModel.buscarTarefas()
     }
 
     override fun onCreateContextMenu(
@@ -109,7 +112,7 @@ class MainActivity : AppCompatActivity(), ToDoListViewInterface {
                         Remover tarefa da fonte de dados
                          */
                         tarefaClicada?.let{
-                            presenter.apagarTarefa(it)
+                            viewModel.apagarTarefa(it)
                             runOnUiThread {
                                 listaTarefasAdapter.remove(it)
                                 toast(getString(R.string.tarefa_removida))
@@ -138,7 +141,7 @@ class MainActivity : AppCompatActivity(), ToDoListViewInterface {
                     /*
                     Remover TODAS as tarefas da fonte de dados
                      */
-                    presenter.apagarTarefas(*listaTarefasAdapter.getAll().toTypedArray())
+                    viewModel.apagarTarefas(*listaTarefasAdapter.getAll().toTypedArray())
                     runOnUiThread {
                         listaTarefasAdapter.clear()
                         toast(getString(R.string.tarefas_removidas))

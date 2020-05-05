@@ -49,4 +49,8 @@ dependencies {
 
     // Corrotinas Kotlin para Android
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3'
+
+    // LiveData
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+
 }

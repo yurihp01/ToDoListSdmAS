@@ -1,12 +1,13 @@
 package br.edu.ifsp.scl.todolistsdm.model.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import br.edu.ifsp.scl.todolistsdm.model.entity.Tarefa
 
 @Dao
 interface TarefaDao {
     @Insert
-    fun inserirTarefa(tarefa: Tarefa): Long
+    suspend fun inserirTarefa(tarefa: Tarefa): Long
 
     @Delete
     fun removerTarefa(tarefa: Tarefa)
@@ -18,8 +19,8 @@ interface TarefaDao {
     fun atualizarTarefa(tarefa: Tarefa)
 
     @Query( "SELECT * FROM tarefa")
-    fun recuperarTarefas(): List<Tarefa>
+     fun recuperarTarefas(): LiveData<MutableList<Tarefa>>
 
     @Query( "SELECT * FROM tarefa WHERE id = :tarefaId")
-    fun recuperaTarefa(tarefaId: Int): Tarefa
+     fun recuperaTarefa(tarefaId: Int): LiveData<Tarefa>
 }
