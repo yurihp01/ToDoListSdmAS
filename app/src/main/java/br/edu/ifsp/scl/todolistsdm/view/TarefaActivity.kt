@@ -8,14 +8,15 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.ifsp.scl.todolistsdm.R
 import br.edu.ifsp.scl.todolistsdm.controller.TarefaActivityController
+import br.edu.ifsp.scl.todolistsdm.controller.TodoListPresenter
 import br.edu.ifsp.scl.todolistsdm.model.entity.Tarefa
 import kotlinx.android.synthetic.main.activity_tarefa.*
 import kotlinx.android.synthetic.main.toolbar.*
 import splitties.toast.toast
 
-class TarefaActivity : AppCompatActivity() {
+class TarefaActivity : AppCompatActivity(), ToDoListViewInterface {
     private var tarefa: Tarefa? = null
-    private lateinit var controller: TarefaActivityController
+    private lateinit var presenter: TodoListPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,7 @@ class TarefaActivity : AppCompatActivity() {
         /*
         Instanciando controller
          */
-        controller = TarefaActivityController(this)
+        presenter = TodoListPresenter(this)
 
         /* Edição ou Nova? */
         tarefa = intent.getParcelableExtra(MainActivity.Constantes.TAREFA_EXTRA)
@@ -54,18 +55,22 @@ class TarefaActivity : AppCompatActivity() {
                  */
                 if (tarefa == null) {
                     tarefa = Tarefa(nome = nomeTarefaEt.text.toString())
-                    controller.salvarTarefa(tarefa!!)
+                    presenter.salvarTarefa(tarefa!!)
                 }
                 else {
                     tarefa?.nome = nomeTarefaEt.text.toString()
-                    controller.alterarTarefa(tarefa!!)
+                    presenter.alterarTarefa(tarefa!!)
                 }
             }
         }
         return true
     }
 
-    fun setRetorno(tarefa: Tarefa) {
+    override fun setTarefas(listaTarefas: MutableList<Tarefa>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setRetorno(tarefa: Tarefa) {
         /*
         Retorna tarefa para MainActivity
         */
